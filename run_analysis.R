@@ -1,8 +1,7 @@
-main <- function() {
+run_analysis <- function() {
   
   library("dplyr") #This invokes the library of dplyr
-  
-  #downloadProjectFile()  #This function will download the file from the web and extract the file in the directory
+ 
   
   activitylabels <- readactivitylabels()  #This function is reading the list of activities (6 in number) in to a dataframe
   
@@ -16,28 +15,17 @@ main <- function() {
   
   data_summary <- subjectData %>% group_by(Subject.ID, Activity.Description) %>% summarise_each(funs(mean))
   
-  write.table(data_summary, file = "C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/final_out.txt", row.name=FALSE)
+  write.table(data_summary, file = "./final_out.txt", row.name=FALSE)
 }
 
-
-downloadProjectFile <- function() {
-  
-  setwd("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning")
-  
-  if(!file.exists("testfile.zip")) {
-    turl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-    file <- download.file(url = turl, "testfile.zip")
-  }
-  unzip("testfile.zip")
-}
 
 readactivitylabels <- function() {
   
   #This function is reading the activity labels and return the dataframe of actitvities. The function is also cleaning the data frame
   #with better description for the column names. This function is validation if the file before reading the file. 
   
-  if(file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/activity_labels.txt")) {
-   t <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/activity_labels.txt")
+  if(file.exists("./UCI HAR Dataset/activity_labels.txt")) {
+   t <- read.table("./UCI HAR Dataset/activity_labels.txt")
    
    #cleaning the column names
    names(t)[1] <- "Activity.ID"
@@ -53,8 +41,8 @@ readfeatures <- function() {
   #with better description for the column names. This function is validation if the file before reading the file. 
 
   
-  if(file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/features.txt")) {
-    t <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/features.txt")  # t is temporary data frame
+  if(file.exists("./UCI HAR Dataset/features.txt")) {
+    t <- read.table("./UCI HAR Dataset/features.txt")  # t is temporary data frame
     
     #clearning the column names
     
@@ -73,16 +61,16 @@ readY <- function(tdfActivityFeatures) {
   
   
   #reading the training data
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/y_train.txt")) {
-    ttraindf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/y_train.txt")
+  if (file.exists("./UCI HAR Dataset/train/y_train.txt")) {
+    ttraindf <- read.table("./UCI HAR Dataset/train/y_train.txt")
   } else 
   {
     print("Y Training dataset not available")
   }
 
   #reading the test data
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/y_test.txt")) {
-    ttestdf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/y_test.txt")
+  if (file.exists("./UCI HAR Dataset/test/y_test.txt")) {
+    ttestdf <- read.table("./UCI HAR Dataset/test/y_test.txt")
   } else
   {
     print("Y Test dataset is not available")
@@ -130,15 +118,15 @@ readX <- function(tdfy, tdffeatures) {
   
   #Reading the X Training dataset
   
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/X_train.txt")) {
-    ttraindf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/X_train.txt")
+  if (file.exists("./UCI HAR Dataset/train/X_train.txt")) {
+    ttraindf <- read.table("./UCI HAR Dataset/train/X_train.txt")
   } else {
     print("File not found")
   }
   
   #reading the X Test data
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/X_test.txt")) {
-    ttestdf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/X_test.txt")
+  if (file.exists("./UCI HAR Dataset/test/X_test.txt")) {
+    ttestdf <- read.table("./UCI HAR Dataset/test/X_test.txt")
   }  else {
     print("file not found")
   }
@@ -187,15 +175,15 @@ readsubject <- function(xdatadf) {
   #The function creates a composite key with Row Index and Source of the data to join
   
   #Reading the training subject data
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/subject_train.txt")) {
-    ttraindf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/train/subject_train.txt")
+  if (file.exists("./UCI HAR Dataset/train/subject_train.txt")) {
+    ttraindf <- read.table("./UCI HAR Dataset/train/subject_train.txt")
   } else {
     print("Training Subject data is not present")
   }
     
   #reading the test subject data
-  if (file.exists("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/subject_test.txt")) {
-    ttestdf <- read.table("C:/Users/sguddanti/Documents/Option Trading/Data Cleaning/UCI HAR Dataset/test/subject_test.txt")
+  if (file.exists("./UCI HAR Dataset/test/subject_test.txt")) {
+    ttestdf <- read.table("./UCI HAR Dataset/test/subject_test.txt")
   } else {
     print("Test Subject data is not present")
   }
@@ -226,3 +214,4 @@ readsubject <- function(xdatadf) {
   temp <- select(temp, -Join.ID, -RowIndex, -Dataset.Name, -Activity.ID)
   return(temp)  
 }
+
